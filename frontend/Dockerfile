@@ -1,0 +1,19 @@
+FROM types AS types
+
+FROM node:12-alpine AS build
+
+WORKDIR /srv
+COPY package*.json /srv/
+COPY --from=types /types /types
+RUN yarn install
+COPY tsconfig.json /srv/
+COPY src /srv/src/
+COPY public /srv/public/
+RUN yarn build
+
+FROM nginx
+WORKDIR /srv
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /srv/build /usr/share/nginx/html
+CMD [ "nginx", "-g", "daemon off;" ]
+

@@ -1,0 +1,28 @@
+services:
+  types:
+    image: types
+    build: ./types
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend/src:/srv/src
+    depends_on:
+      - types
+    networks:
+      - backend
+  frontend:
+    build: ./frontend
+    depends_on:
+      - types
+    networks:
+      - frontend
+  stack:
+    build: ./stack
+    ports:
+      - "8080:80"
+    networks:
+      - backend
+      - frontend
+networks:
+  frontend:
+  backend:
