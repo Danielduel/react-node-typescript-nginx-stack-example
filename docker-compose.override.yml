@@ -1,0 +1,20 @@
+# override production to create development environment
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.development
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./backend/src:/srv/src
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.development
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./frontend/src:/srv/src
+

@@ -1,0 +1,12 @@
+FROM types AS types
+
+FROM node:12-alpine AS build
+
+WORKDIR /srv
+COPY package*.json /srv/
+COPY --from=types /types /types
+RUN yarn install
+COPY tsconfig.json /srv/
+COPY src /srv/src/
+COPY public /srv/public/
+CMD yarn start

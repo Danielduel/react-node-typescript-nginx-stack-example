@@ -1,0 +1,13 @@
+FROM types AS types
+
+FROM node:12-alpine
+
+RUN npm install -g ts-node nodemon typescript
+
+WORKDIR /srv
+COPY package*.json /srv/
+COPY --from=types /types /types
+RUN npm ci
+COPY tsconfig.json /srv/
+COPY src /srv/src/
+CMD nodemon --watch './src/**/*.ts' --exec 'ts-node' ./src/index.ts

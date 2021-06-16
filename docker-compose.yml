@@ -1,15 +1,17 @@
+# production setup
+
 services:
   types:
     image: types
     build: ./types
   backend:
     build: ./backend
-    volumes:
-      - ./backend/src:/srv/src
     depends_on:
       - types
     networks:
       - backend
+    environment:
+      - NODE_ENV=production
   frontend:
     build: ./frontend
     depends_on:

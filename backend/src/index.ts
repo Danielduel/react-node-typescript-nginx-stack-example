@@ -4,6 +4,9 @@ import { LiveActivatedChannels } from "types/LiveActivatedChannels";
 
 const app = express();
 
+app.get("/list", (req, res) => {
+  res.send("a list");
+})
 app.get("/list-of-channels", (req, res) => {
   const extensionId = "u4pv564j7h1cq9bcuf9tk8yohixws4";
   fetch(`https://api.twitch.tv/extensions/${extensionId}/live_activated_channels`, {
