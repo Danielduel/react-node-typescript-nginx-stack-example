@@ -17,4 +17,3 @@ services:
       - NODE_ENV=development
     volumes:
       - ./frontend/src:/srv/src
-
