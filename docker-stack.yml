@@ -6,6 +6,7 @@ services:
     image: types
     build: ./types
   backend:
+    image: 127.0.0.1:5000/stack-example/backend
     build:
       context: ./backend
       dockerfile: Dockerfile.production
@@ -16,6 +17,7 @@ services:
     environment:
       - NODE_ENV=production
   frontend:
+    image: 127.0.0.1:5000/stack-example/frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile.production
@@ -24,6 +26,7 @@ services:
     networks:
       - frontend
   proxy:
+    image: 127.0.0.1:5000/stack-example/proxy
     build: ./proxy
     ports:
       - "8080:80"
