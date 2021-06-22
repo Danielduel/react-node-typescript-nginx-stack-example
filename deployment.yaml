@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-backend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: backend
+  template:
+    metadata:
+      labels:
+        role: backend
+    spec:
+      containers:
+      - name: backend
+        image: temp/backend:local
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-frontend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: frontend
+  template:
+    metadata:
+      labels:
+        role: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: temp/frontend:local
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-frontend
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    role: service-frontend
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 30001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-backend
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    role: service-backend
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30002
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reverse-proxy
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  defaultBackend:
+    service:
+      name: define loadbalancer?
+      port:
+        number: 8000
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-frontend
+            port:
+              number: 30001
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: service-backend
+            port:
+              number: 30002

@@ -1,4 +1,4 @@
-FROM types AS types
+FROM temp/types:local AS types
 
 FROM node:12-alpine AS build
 
